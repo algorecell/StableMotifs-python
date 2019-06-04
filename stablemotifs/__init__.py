@@ -23,7 +23,7 @@ def load(modelfile, quiet=False):
 
     :param str modelfile: Filename or URL of Boolean network in BooleanNet format
     :keyword bool quiet: If True, skip computation output
-    :returns: :py:class:`.results.StableMotifsResult` instance
+    :rtype: :py:class:`.results.StableMotifsResult` instance
     """
     modelfile = ensure_localfile(modelfile)
     modelbase = os.path.basename(modelfile)

@@ -3,9 +3,23 @@ import os
 
 import pandas as pd
 
+try:
+    from colomoto.reprogramming import *
+    from colomoto.types import PartialState
+    EXPERIMENTAL_REPROGRAMMING_API = True
+except ImportError:
+    EXPERIMENTAL_REPROGRAMMING_API = False
+    pass
+
 class StableMotifsResult(object):
+    """
+    TODO
+    """
 
     def __init__(self, wd, model_name, cleanup_wd=False):
+        """
+        TODO
+        """
         self.wd = wd
         self.model_name = model_name
         self.attractors = self._parse_attractors()
@@ -47,13 +61,34 @@ class StableMotifsResult(object):
 
     @property
     def stable_motifs(self):
+        """
+        TODO
+        """
         if not hasattr(self, "_StableMotifsResult__cache_stable_motifs"):
             self.__cache_stable_motifs = self._parse_stable_motifs()
         return self.__cache_stable_motifs
 
     @property
     def control_sets(self):
+        """
+        TODO
+
+        :rtype: dict[int, dict[str, int] list]
+        """
         if not hasattr(self, "_StableMotifsResult__cache_control_sets"):
             self.__cache_control_sets = self._parse_control_sets()
         return self.__cache_control_sets
 
+    def reprogramming_to_attractor(self, *spec, **kwspec):
+        """
+        TODO
+        """
+        if not EXPERIMENTAL_REPROGRAMMING_API:
+            raise NotImplementedError
+        strategies = []
+        spec = PartialState(*spec, **kwspec)
+        for i, attractor in enumerate(self.attractors):
+            if spec.match_state(attractor):
+                for cs in self.control_sets[i]:
+                    strategies.append(FromAny(PermanentPerturbation(cs)))
+        return strategies
