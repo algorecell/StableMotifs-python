@@ -90,5 +90,5 @@ class StableMotifsResult(object):
         for i, attractor in enumerate(self.attractors):
             if spec.match_state(attractor):
                 for cs in self.control_sets[i]:
-                    strategies.append(FromAny(PermanentPerturbation(cs)))
+                    strategies.append(FromAny(TemporaryPerturbation(cs)))
         return strategies
