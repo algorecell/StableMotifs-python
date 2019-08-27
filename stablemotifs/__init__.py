@@ -6,6 +6,7 @@ import subprocess
 import sys
 import tempfile
 
+from colomoto_jupyter import import_colomoto_tool
 from colomoto_jupyter.io import ensure_localfile
 
 from .jupyter import upload
@@ -17,28 +18,36 @@ STABLEMOTIFS_JAR = os.path.join(os.path.dirname(__file__), "jars",
 
 from .results import StableMotifsResult
 
-def load(modelfile, quiet=False):
+def load(model, quiet=False):
     """
     Execute StableMotifs analysis on the given Boolean network model.
 
-    :param str modelfile: Filename or URL of Boolean network in BooleanNet format
+    :param biolqm or str modelfile: either a bioLQM object, or Filename/URL of Boolean network in BooleanNet format
     :keyword bool quiet: If True, skip computation output
     :rtype: :py:class:`.results.StableMotifsResult` instance
     """
-    modelfile = ensure_localfile(modelfile)
-    modelbase = os.path.basename(modelfile)
-    model_name = modelbase.split(".")[0]
 
     # prepare temporary working space
     wd = tempfile.mkdtemp(prefix="StableMotifs-")
-
     # cleanup working directory at exit
     def cleanup():
         shutil.rmtree(wd)
     atexit.register(cleanup)
 
-    # copy model file
-    shutil.copy(modelfile, wd)
+    is_modelfile = True
+    if "biolqm" in sys.modules:
+        biolqm = sys.modules["biolqm"]
+        if biolqm.is_biolqm_object(model):
+            is_modelfile = False
+            modelfile = os.path.join(wd, "model.txt")
+            assert biolqm.save(model, modelfile, "booleannet"), "Error converting from bioLQM"
+
+    if is_modelfile:
+        modelfile = ensure_localfile(model)
+        shutil.copy(modelfile, wd)
+
+    modelbase = os.path.basename(modelfile)
+    model_name = modelbase.split(".")[0]
 
     # invoke StableMotifs
     proc = subprocess.Popen(["java", "-jar", STABLEMOTIFS_JAR, modelbase],
