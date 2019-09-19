@@ -4,8 +4,8 @@ import os
 import pandas as pd
 
 try:
-    from colomoto.reprogramming import *
     from colomoto.types import PartialState
+    from algorecell_types import *
     EXPERIMENTAL_REPROGRAMMING_API = True
 except ImportError:
     EXPERIMENTAL_REPROGRAMMING_API = False
@@ -85,10 +85,10 @@ class StableMotifsResult(object):
         """
         if not EXPERIMENTAL_REPROGRAMMING_API:
             raise NotImplementedError
-        strategies = []
+        strategies = ReprogrammingStrategies()
         spec = PartialState(*spec, **kwspec)
         for i, attractor in enumerate(self.attractors):
             if spec.match_state(attractor):
                 for cs in self.control_sets[i]:
-                    strategies.append(FromAny(TemporaryPerturbation(cs)))
+                    strategies.add(FromAny(TemporaryPerturbation(cs)))
         return strategies
