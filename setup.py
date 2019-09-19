@@ -19,6 +19,7 @@ setup(name=NAME,
     description = "Python interface to StableMotifs",
     install_requires = [
         "colomoto_jupyter",
+        "algorecell_types",
         "pandas",
     ],
     classifiers=[
