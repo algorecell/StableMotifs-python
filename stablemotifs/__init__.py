@@ -18,11 +18,13 @@ STABLEMOTIFS_JAR = os.path.join(os.path.dirname(__file__), "jars",
 
 from .results import StableMotifsResult
 
-def load(model, quiet=False):
+def load(model, mcl="", msm="", quiet=False):
     """
     Execute StableMotifs analysis on the given Boolean network model.
 
     :param biolqm or str modelfile: either a bioLQM object, or Filename/URL of Boolean network in BooleanNet format
+    :param str mcl: Optional parameter for a threshold in the maximum cycle length (mcl). One must specify both a mcl and msm.
+    :param str msm: Optional parameter for a threshold in the maximum stable motif size (msm).  One must specify both a mcl and msm.
     :keyword bool quiet: If True, skip computation output
     :rtype: :py:class:`.results.StableMotifsResult` instance
     """
@@ -50,8 +52,11 @@ def load(model, quiet=False):
     model_name = modelbase.split(".")[0]
 
     # invoke StableMotifs
-    proc = subprocess.Popen(["java", "-jar", STABLEMOTIFS_JAR, modelbase],
-        cwd=wd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    argv = ["java", "-jar", STABLEMOTIFS_JAR, modelbase]
+    if mcl and msm:
+        argv += list(map(str, [mcl, msm]))
+    proc = subprocess.Popen(argv, cwd=wd,
+                stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     with proc.stdout:
         for line in iter(proc.stdout.readline, b''):
             if quiet:
