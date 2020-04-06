@@ -9,6 +9,8 @@ import tempfile
 from colomoto_jupyter import import_colomoto_tool
 from colomoto_jupyter.io import ensure_localfile
 
+from colomoto.minibn import BooleanNetwork
+
 from .jupyter import upload
 
 __version__ = "0.1"
@@ -38,11 +40,15 @@ def load(model, mcl="", msm="", quiet=False):
 
     def biolqm_import(biolqm, lqm):
         modelfile = os.path.join(wd, "model.txt")
-        assert biolqm.save(model, modelfile, "booleannet"), "Error converting from bioLQM"
+        assert biolqm.save(lqm, modelfile, "booleannet"), "Error converting from bioLQM"
         return modelfile, False
 
     is_modelfile = True
-    if "biolqm" in sys.modules:
+    if isinstance(model, BooleanNetwork):
+        lqm = model.to_biolqm()
+        biolqm = import_colomoto_tool("biolqm")
+        modelfile, is_modelfile = biolqm_import(biolqm, lqm)
+    elif "biolqm" in sys.modules:
         biolqm = sys.modules["biolqm"]
         if biolqm.is_biolqm_object(model):
             modelfile, is_modelfile = biolqm_import(biolqm, model)
