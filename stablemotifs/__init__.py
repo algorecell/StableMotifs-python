@@ -36,13 +36,22 @@ def load(model, mcl="", msm="", quiet=False):
         shutil.rmtree(wd)
     atexit.register(cleanup)
 
+    def biolqm_import(biolqm, lqm):
+        modelfile = os.path.join(wd, "model.txt")
+        assert biolqm.save(model, modelfile, "booleannet"), "Error converting from bioLQM"
+        return modelfile, False
+
     is_modelfile = True
     if "biolqm" in sys.modules:
         biolqm = sys.modules["biolqm"]
         if biolqm.is_biolqm_object(model):
-            is_modelfile = False
-            modelfile = os.path.join(wd, "model.txt")
-            assert biolqm.save(model, modelfile, "booleannet"), "Error converting from bioLQM"
+            modelfile, is_modelfile = biolqm_import(biolqm, model)
+    if is_modelfile and "ginsim" in sys.modules:
+        ginsim = sys.modules["ginsim"]
+        if ginsim.is_ginsim_object(model):
+            model = ginsim.to_biolqm(model)
+            biolqm = import_colomoto_tool("biolqm")
+            modelfile, is_modelfile = biolqm_import(biolqm, model)
 
     if is_modelfile:
         modelfile = ensure_localfile(model)
