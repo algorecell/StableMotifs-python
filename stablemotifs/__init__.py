@@ -88,5 +88,5 @@ def load(model, fixed=None, mcl="", msm="", quiet=False):
     assert proc.wait() == 0, "An error occured while running StableMotifs"
 
     # return interface to results
-    return StableMotifsResult(wd, model_name)
+    return StableMotifsResult(wd, model_name, fixed)
 

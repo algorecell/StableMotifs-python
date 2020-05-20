@@ -16,12 +16,13 @@ class StableMotifsResult(object):
     TODO
     """
 
-    def __init__(self, wd, model_name, cleanup_wd=False):
+    def __init__(self, wd, model_name, fixed):
         """
         TODO
         """
         self.wd = wd
         self.model_name = model_name
+        self.fixed = fixed
         self.attractors = self._parse_attractors()
 
     def _wfile(self, pattern):
@@ -90,5 +91,9 @@ class StableMotifsResult(object):
         for i, attractor in enumerate(self.attractors):
             if spec.match_state(attractor):
                 for cs in self.control_sets[i]:
-                    strategies.add(FromAny(TemporaryPerturbation(cs)))
+                    p = TemporaryPerturbation(cs)
+                    s = FromCondition("input", p) if self.fixed else FromAny(p)
+                    strategies.add(s)
+        if self.fixed:
+            strategies.register_alias("input", self.fixed)
         return strategies
