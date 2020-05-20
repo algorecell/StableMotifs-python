@@ -20,7 +20,7 @@ STABLEMOTIFS_JAR = os.path.join(os.path.dirname(__file__), "jars",
 
 from .results import StableMotifsResult
 
-def load(model, mcl="", msm="", quiet=False):
+def load(model, fixed=None, mcl="", msm="", quiet=False):
     """
     Execute StableMotifs analysis on the given Boolean network model.
 
@@ -39,6 +39,9 @@ def load(model, mcl="", msm="", quiet=False):
     atexit.register(cleanup)
 
     def biolqm_import(biolqm, lqm):
+        if fixed:
+            pert = " ".join((f"{node}%{value}" for node, value in fixed.items()))
+            lqm = biolqm.perturbation(lqm, pert)
         modelfile = os.path.join(wd, "model.txt")
         assert biolqm.save(lqm, modelfile, "booleannet"), "Error converting from bioLQM"
         return modelfile, False
@@ -61,7 +64,12 @@ def load(model, mcl="", msm="", quiet=False):
 
     if is_modelfile:
         modelfile = ensure_localfile(model)
-        shutil.copy(modelfile, wd)
+        if fixed:
+            biolqm = import_colomoto_tool("biolqm")
+            model = biolqm.load(modelfile, "booleannet")
+            modelfile, is_modelfile = biolqm_import(biolqm, model)
+        else:
+            shutil.copy(modelfile, wd)
 
     modelbase = os.path.basename(modelfile)
     model_name = modelbase.split(".")[0]
