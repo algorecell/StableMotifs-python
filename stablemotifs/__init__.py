@@ -13,11 +13,6 @@ from colomoto.minibn import BooleanNetwork
 
 from .jupyter import upload
 
-__version__ = "0.1"
-
-STABLEMOTIFS_JAR = os.path.join(os.path.dirname(__file__), "jars",
-        "StableMotifs.jar")
-
 from .results import StableMotifsResult
 
 def load(model, fixed=None, mcl="", msm="", quiet=False):
@@ -75,7 +70,7 @@ def load(model, fixed=None, mcl="", msm="", quiet=False):
     model_name = modelbase.split(".")[0]
 
     # invoke StableMotifs
-    argv = ["java", "-jar", STABLEMOTIFS_JAR, modelbase]
+    argv = ["StableMotifs", modelbase]
     if mcl and msm:
         argv += list(map(str, [mcl, msm]))
     proc = subprocess.Popen(argv, cwd=wd,

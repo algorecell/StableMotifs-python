@@ -1,0 +1,32 @@
+{% set name = "pystablemotifs" %}
+{% set version = "9999" %}
+
+package:
+  name: '{{ name|lower }}'
+  version: '{{ version }}'
+
+source:
+  path: ../
+
+build:
+  number: 0
+  script: python setup.py install --single-version-externally-managed --record=record.txt
+  noarch: python
+
+requirements:
+  build:
+    - python
+    - setuptools
+
+  run:
+    - algorecell_types
+    - colomoto_jupyter
+    - pandas
+    - python
+    - stablemotifs
+
+about:
+  home: https://github.com/algorecell/pyStableMotifs
+  summary: 'Python interface to Stable Motif Control Algorithm for Boolean Networks'
+  license_family: LGPL
+  license: LGPL v3+/CeCILL-C

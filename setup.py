@@ -1,21 +1,13 @@
 
-import os
-import re
 from setuptools import setup, find_packages
 
 NAME = 'stablemotifs'
 
-META = {}
-META_FILE = os.path.join(NAME, "__init__.py")
-with open(META_FILE) as f:
-    __data = f.read()
-for key in ["version"]:
-    match = re.search(r"^__{0}__ = ['\"]([^'\"]*)['\"]".format(key), __data, re.M)
-    if not match:
-        raise RuntimeError("Unable to find __{meta}__ string.".format(meta=key))
-    META[key] = match.group(1)
-
 setup(name=NAME,
+    version="9999",
+    author = "Loïc Paulevé",
+    author_email = "loic.pauleve@labri.fr",
+    url = "https://github.com/algorecell/pyStableMotifs",
     description = "Python interface to StableMotifs",
     install_requires = [
         "colomoto_jupyter",
@@ -30,6 +22,6 @@ setup(name=NAME,
 
     include_package_data = True,
     packages = find_packages(exclude=["examples"]),
-    **META
+    py_modules = ["stablemotifs_setup"]
 )
 
