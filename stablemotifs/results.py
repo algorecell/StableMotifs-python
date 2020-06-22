@@ -3,6 +3,9 @@ import os
 
 import pandas as pd
 
+from algorecell_types import *
+from colomoto.types import PartialState
+
 class StableMotifsResult(object):
     """
     Class of objects returned by :py:func:`load` function giving access to
