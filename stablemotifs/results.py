@@ -5,13 +5,15 @@ import pandas as pd
 
 class StableMotifsResult(object):
     """
-    TODO
-    """
+    Class of objects returned by :py:func:`load` function giving access to
+    StableMotifs results.
 
+    .. py:attribute:: attractors
+
+        List of attractors (dictionnaries mapping node names to ``0``, ``1``, or
+        ``'X'``).
+    """
     def __init__(self, wd, model_name, fixed):
-        """
-        TODO
-        """
         self.wd = wd
         self.model_name = model_name
         self.fixed = fixed
@@ -55,7 +57,7 @@ class StableMotifsResult(object):
     @property
     def stable_motifs(self):
         """
-        TODO
+        List of stable motifs, mapping subset of nodes to Boolean values (`dict[str,int]`)
         """
         if not hasattr(self, "_StableMotifsResult__cache_stable_motifs"):
             self.__cache_stable_motifs = self._parse_stable_motifs()
@@ -64,9 +66,7 @@ class StableMotifsResult(object):
     @property
     def control_sets(self):
         """
-        TODO
-
-        :rtype: dict[int, dict[str, int] list]
+        Dictionnary mapping attractor indices to their control sets (`dict[str,int] list`)
         """
         if not hasattr(self, "_StableMotifsResult__cache_control_sets"):
             self.__cache_control_sets = self._parse_control_sets()
@@ -74,7 +74,17 @@ class StableMotifsResult(object):
 
     def reprogramming_to_attractor(self, *spec, **kwspec):
         """
-        TODO
+        Compute reprogramming strategies ensuring that only attractors matching
+        with the given specification can be reached with the asynchronous mode.
+        The perturbations are temporary, i.e., can be released once in the
+        attractor.
+
+        :rtype: ``algorecell_types.ReprogrammingStrategies``
+
+        Examples:
+
+        >>> sm.reprogramming_to_attractor(A=1, B=0)
+        >>> sm.reprogramming_to_attractor({"A": 1, "B": 0})
         """
         strategies = ReprogrammingStrategies()
         spec = PartialState(*spec, **kwspec)

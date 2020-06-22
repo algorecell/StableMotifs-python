@@ -6,6 +6,29 @@ for the control of Boolean networks.
 The control predictions can be processed using the `algorecell_types
 <https://github.com/algorecell/algorecell_types>`_ library, which eases the
 display and comparison with other control methods.
+
+Quick usage:
+
+>>> import stablemotifs
+
+Model loading:
+
+>>> sm = stablemotifs.load("network.txt") # in BooleanNet format
+# alternatively, load with biolqm in any format
+>>> import biolqm
+>>> lm = biolqm.load("model.zginml") # or any format support by bioLQM
+>>> sm = stablemotifs.load(lm)
+
+Reprogramming predictions:
+
+>>> sr = sm.reprogramming_to_attractor({"A": 1, "B": 0})
+>>> sr.as_table()
+
+See ``help(sr)`` for other display methods
+
+Examples can be found at:
+    * https://nbviewer.jupyter.org/github/algorecell/StableMotifs-python/tree/master/examples/
+
 """
 
 import atexit
@@ -28,8 +51,8 @@ def load(model, fixed=None, mcl="", msm="", quiet=False):
     """
     Execute StableMotifs analysis on the given Boolean network model.
 
-    :param model: either a bioLQM object, or Filename/URL of Boolean network in BooleanNet format
-    :keyword dict[str,int] fixed: TODO
+    :param model: either a ``biolqm`` or ``ginsim`` object, or filename/URL of Boolean network in BooleanNet format
+    :keyword dict[str,int] fixed: fix the given nodes to their associated given values
     :keyword str mcl: Optional threshold in the maximum cycle length (mcl). One must specify both a mcl and msm.
     :keyword str msm: Optional threshold in the maximum stable motif size (msm).  One must specify both a mcl and msm.
     :keyword bool quiet: If True, skip computation output
