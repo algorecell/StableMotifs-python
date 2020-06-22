@@ -1,4 +1,4 @@
-{% set name = "pystablemotifs" %}
+{% set name = "stablemotifs-python" %}
 {% set version = "9999" %}
 
 package:
@@ -26,7 +26,7 @@ requirements:
     - stablemotifs
 
 about:
-  home: https://github.com/algorecell/pyStableMotifs
+  home: https://github.com/algorecell/StableMotifs-python
   summary: 'Python interface to Stable Motif Control Algorithm for Boolean Networks'
   license_family: LGPL
   license: LGPL v3+/CeCILL-C
