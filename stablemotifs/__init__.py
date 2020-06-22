@@ -7,6 +7,8 @@ The control predictions can be processed using the `algorecell_types
 <https://github.com/algorecell/algorecell_types>`_ library, which eases the
 display and comparison with other control methods.
 
+Installation instructions at https://github.com/algorecell/StableMotifs-python
+
 Quick usage:
 
 >>> import stablemotifs
