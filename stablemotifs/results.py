@@ -82,7 +82,7 @@ class StableMotifsResult(object):
         The perturbations are temporary, i.e., can be released once in the
         attractor.
 
-        :rtype: ``algorecell_types.ReprogrammingStrategies``
+        :rtype: `algorecell_types.ReprogrammingStrategies <https://algorecell-types.readthedocs.io/#algorecell_types.ReprogrammingStrategies>`_
 
         Examples:
 
