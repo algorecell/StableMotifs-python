@@ -1,3 +1,12 @@
+"""
+This module brings a Python interface to the tool `"StableMotifs"
+<https://github.com/jgtz/StableMotifs>`_ (Jorge G. T.  Zañudo and Réka Albert),
+for the control of Boolean networks.
+
+The control predictions can be processed using the `algorecell_types
+<https://github.com/algorecell/algorecell_types>`_ library, which eases the
+display and comparison with other control methods.
+"""
 
 import atexit
 import os
@@ -19,9 +28,10 @@ def load(model, fixed=None, mcl="", msm="", quiet=False):
     """
     Execute StableMotifs analysis on the given Boolean network model.
 
-    :param biolqm or str modelfile: either a bioLQM object, or Filename/URL of Boolean network in BooleanNet format
-    :param str mcl: Optional parameter for a threshold in the maximum cycle length (mcl). One must specify both a mcl and msm.
-    :param str msm: Optional parameter for a threshold in the maximum stable motif size (msm).  One must specify both a mcl and msm.
+    :param model: either a bioLQM object, or Filename/URL of Boolean network in BooleanNet format
+    :keyword dict[str,int] fixed: TODO
+    :keyword str mcl: Optional threshold in the maximum cycle length (mcl). One must specify both a mcl and msm.
+    :keyword str msm: Optional threshold in the maximum stable motif size (msm).  One must specify both a mcl and msm.
     :keyword bool quiet: If True, skip computation output
     :rtype: :py:class:`.results.StableMotifsResult` instance
     """

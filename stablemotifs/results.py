@@ -3,14 +3,6 @@ import os
 
 import pandas as pd
 
-try:
-    from colomoto.types import PartialState
-    from algorecell_types import *
-    EXPERIMENTAL_REPROGRAMMING_API = True
-except ImportError:
-    EXPERIMENTAL_REPROGRAMMING_API = False
-    pass
-
 class StableMotifsResult(object):
     """
     TODO
@@ -84,8 +76,6 @@ class StableMotifsResult(object):
         """
         TODO
         """
-        if not EXPERIMENTAL_REPROGRAMMING_API:
-            raise NotImplementedError
         strategies = ReprogrammingStrategies()
         spec = PartialState(*spec, **kwspec)
         for i, attractor in enumerate(self.attractors):
