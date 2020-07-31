@@ -8,12 +8,9 @@ display and comparison with other control methods.
 
 ## Installation
 
-<!--
 ### CoLoMoTo Notebook environment
 
 `stablemotifs-python` is distributed as part of the [CoLoMoTo docker](http://colomoto.org/notebook).
-
--->
 
 ### Using conda
 ```
