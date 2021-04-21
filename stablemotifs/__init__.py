@@ -40,6 +40,7 @@ import subprocess
 import sys
 import tempfile
 
+import colomoto.setup_helper
 from colomoto_jupyter import import_colomoto_tool
 from colomoto_jupyter.io import ensure_localfile
 
