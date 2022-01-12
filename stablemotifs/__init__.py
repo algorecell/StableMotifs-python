@@ -115,7 +115,7 @@ def load(model, fixed=None, mcl="", msm="", quiet=False):
         for line in iter(proc.stdout.readline, b''):
             if quiet:
                 continue
-            sys.stdout.write(line)
+            sys.stdout.write(line.decode())
     assert proc.wait() == 0, "An error occured while running StableMotifs"
 
     # return interface to results
